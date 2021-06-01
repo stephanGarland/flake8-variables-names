@@ -25,6 +25,13 @@ def get_var_names_from_funcdef(funcdef_node: ast.FunctionDef) -> List[Tuple[str,
     return vars_info
 
 
+def get_var_names_from_list_comprehension(
+    list_comprehension_node: ast.ListComp
+) -> List[Tuple[str, ast.AST]]:
+    if isinstance(list_comprehension_node, ast.ListComp):
+        return [(list_comprehension_node, ast.Name)]
+
+
 def get_var_names_from_for(for_node: ast.For) -> List[Tuple[str, ast.AST]]:
     if isinstance(for_node.target, ast.Name):
         return [(for_node.target.id, for_node.target)]
@@ -43,4 +50,6 @@ def extract_all_variable_names(ast_tree: ast.AST) -> List[Tuple[str, ast.AST]]:
     var_info += flat([get_var_names_from_funcdef(f) for f in funcdefs])
     fors = [n for n in ast.walk(ast_tree) if isinstance(n, ast.For)]
     var_info += flat([get_var_names_from_for(f) for f in fors])
+    list_comps = [n for n in ast.walk(ast_tree) if isinstance(n, ast.ListComp)]
+    var_info += flat([get_var_names_from_list_comprehension(lc) for lc in list_comps])
     return var_info
