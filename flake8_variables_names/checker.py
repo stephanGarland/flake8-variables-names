@@ -48,7 +48,7 @@ class VariableNamesChecker:
         'info',
         'handler',
     ]
-    _single_letter_names_whitelist = ['i', 'j', 'k', 'x', '_', 'T']
+    _single_letter_names_whitelist = ['i', 'j', 'k', '_', 'T']
     _single_letter_names_whitelist_strict = ['_', 'T']
 
     def __init__(self, tree, filename: str):
